@@ -1,0 +1,66 @@
+{
+    "fp16": {
+        "enabled": false,
+        "loss_scale": 0,
+        "initial_scale_power": 32,
+        "loss_scale_window": 1000,
+        "hysteresis": 2,
+        "min_loss_scale": 1
+    },
+    "bf16": {
+        "enabled": true,
+        "loss_scale": 0,
+        "initial_scale_power": 32,
+        "loss_scale_window": 1000,
+        "hysteresis": 2,
+        "min_loss_scale": 1
+    },
+    "optimizer": {
+        "type": "AdamW",
+        "params": {
+            "lr": 1e-05,
+            "betas": [
+                0.9,
+                0.95
+            ],
+            "eps": 1e-05,
+            "weight_decay": 0.1,
+            "torch_adam": true,
+            "adam_w_mode": true
+        }
+    },
+    "lr_scheduler": {
+        "type": "WarmupCosineLR",
+        "params": {
+            "warmup_min_lr": 5e-06,
+            "warmup_max_lr": 0.0001,
+            "warmup_num_steps": 5000,
+            "total_num_steps": 1200000
+        }
+    },
+    "zero_optimization": {
+        "stage": 1,
+        "allgather_partitions": true,
+        "allgather_bucket_size": 200000000.0,
+        "reduce_scatter": true,
+        "reduce_bucket_size": 200000000.0,
+        "overlap_comm": true,
+        "contiguous_gradients": true,
+        "sub_group_size": 1000000000.0,
+        "stage3_prefetch_bucket_size": 50000000.0,
+        "stage3_param_persistence_threshold": 1000000.0,
+        "stage3_max_live_parameters": 1000000000.0,
+        "stage3_max_reuse_distance": 1000000000.0,
+        "gather_16bit_weights_on_model_save": true
+    },
+    "tensor_model_parallel_size": 8,
+    "model_parallel_size": 8,
+    "zero_allow_untested_optimizer": false,
+    "gradient_clipping": 1.0,
+    "clipping_strategy": "norm",
+    "train_batch_size": 1120,
+    "train_micro_batch_size_per_gpu": 28,
+    "gradient_accumulation_steps": 5,
+    "wall_clock_breakdown": false,
+    "dump_state": false
+}
